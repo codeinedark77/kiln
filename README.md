@@ -1,5 +1,10 @@
 # Kiln
 
+[![Build](https://img.shields.io/badge/build-passing-brightgreen)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
+[![Part of Agentic_](https://img.shields.io/badge/Part_of-Agentic__Super__OS-8A2BE2.svg)](#)
+
 A storage engine built from scratch in Go — one verified stage at a time.
 
 The goal isn't to replace SQLite or DuckDB. It's to stop treating them as
