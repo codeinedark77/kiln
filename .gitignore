@@ -1,0 +1,4 @@
+/kiln
+*.db
+*.test
+*.out
