@@ -32,6 +32,32 @@ buffer pool, crash recovery, and (eventually) concurrent transactions.
 Each stage is meant to be independently correct and independently tested
 before the next one is built on top of it.
 
+## 🧱 Architecture
+
+```mermaid
+graph TD
+    subgraph "Application Layer"
+        APP[Agentic_ Host Process] --> TXN[Multi-Op Transactions]
+    end
+
+    subgraph "Kiln Storage Engine (Go)"
+        TXN --> BT[B+Tree Index]
+        BT --> BP[LRU Buffer Pool]
+        BP --> JNL[Rollback Journal]
+        JNL --> PAGER[Disk Pager]
+    end
+
+    subgraph "Disk Persistence"
+        PAGER --> DB[(Database File\n.db)]
+        JNL --> WAL[(Write-Ahead Log\n.journal)]
+    end
+    
+    style BT fill:#8a2be2,stroke:#fff,stroke-width:2px,color:#fff
+    style BP fill:#2980b9,stroke:#fff,stroke-width:2px,color:#fff
+    style JNL fill:#e67e22,stroke:#fff,stroke-width:2px,color:#fff
+    style PAGER fill:#c0392b,stroke:#fff,stroke-width:2px,color:#fff
+```
+
 ## Design decisions so far
 
 - **Page size: 4096 bytes.** Matches the common OS page size; the same
