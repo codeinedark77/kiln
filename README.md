@@ -11,6 +11,31 @@ The goal isn't to replace SQLite or DuckDB. It's to stop treating them as
 black boxes by building the same primitives yourself: pages, a B-tree, a
 buffer pool, crash recovery, and (eventually) concurrent transactions.
 
+## Usage
+
+Kiln is built to be imported as the underlying storage engine for Go applications.
+
+```go
+import (
+    "fmt"
+    "kiln/pager"
+    "kiln/btree"
+)
+
+func main() {
+    // 1. Open the raw disk file
+    p, _ := pager.Open("database.db")
+    
+    // 2. Mount the B+Tree Index on top
+    db, _ := btree.Open(p)
+
+    // 3. Insert and Retrieve
+    db.Insert([]byte("key"), []byte("value"))
+    val, _ := db.Get([]byte("key"))
+    fmt.Println(string(val)) 
+}
+```
+
 ## Roadmap
 
 - [x] **Stage 1 — Page storage.** Fixed-size pages, raw byte layout, a
