@@ -1,6 +1,5 @@
 # Kiln
 
-[![Build](https://img.shields.io/badge/build-passing-brightgreen)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Go](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
 [![Part of Agentic_](https://img.shields.io/badge/Part_of-Agentic__Super__OS-8A2BE2.svg)](#)
@@ -24,14 +23,25 @@ import (
 
 func main() {
     // 1. Open the raw disk file
-    p, _ := pager.Open("database.db")
+    p, err := pager.Open("database.db")
+    if err != nil {
+        panic(err)
+    }
     
     // 2. Mount the B+Tree Index on top
-    db, _ := btree.Open(p)
+    db, err := btree.Open(p)
+    if err != nil {
+        panic(err)
+    }
 
     // 3. Insert and Retrieve
-    db.Insert([]byte("key"), []byte("value"))
-    val, _ := db.Get([]byte("key"))
+    if err := db.Insert([]byte("key"), []byte("value")); err != nil {
+        panic(err)
+    }
+    val, err := db.Get([]byte("key"))
+    if err != nil {
+        panic(err)
+    }
     fmt.Println(string(val)) 
 }
 ```
