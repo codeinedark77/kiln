@@ -602,6 +602,11 @@ Read all of these as findings, not wins — see "the buffer pool's
 benchmark story" above for what each one actually revealed, including
 where an earlier prediction in this same file turned out to be wrong.
 
+## ⚠️ Known Architectural Limitations
+
+- **`WithTxn` Atomicity Bypass**: `WithTxn`'s atomicity guarantee silently becomes a no-op if the `BTree` is built directly over the bare `Pager` (without a `Journal`). There is currently no marker type or runtime check to prevent this misuse, making it easy to end up with weaker durability guarantees than expected.
+- **Reader Stalls during `All()`**: The `All()` scan holds the shared read lock (`RWMutex`) for its entire duration. On a large tree, this can stall concurrent writers for a noticeable stretch, since Go's `RWMutex` queues new readers behind an already-waiting writer.
+
 ## Project name
 
 "Kiln" is a placeholder — rename freely (just update the `module` line
